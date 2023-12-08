@@ -3,6 +3,7 @@ import os
 import re
 import tarfile
 import zipfile
+import subprocess
 from pathlib import Path
 from shutil import copyfile, rmtree
 from typing import Dict, List, Tuple
@@ -355,23 +356,23 @@ class ModelManager(object):
     def create_dir_and_download_model(self, model_name, model_item, output_path):
         os.makedirs(output_path, exist_ok=True)
         # handle TOS
-        if not self.tos_agreed(model_item, output_path):
-            if not self.ask_tos(output_path):
-                os.rmdir(output_path)
-                raise Exception(" [!] You must agree to the terms of service to use this model.")
-        print(f" > Downloading model to {output_path}")
-        try:
-            if "fairseq" in model_name:
-                self.download_fairseq_model(model_name, output_path)
-            elif "github_rls_url" in model_item:
-                self._download_github_model(model_item, output_path)
-            elif "hf_url" in model_item:
-                self._download_hf_model(model_item, output_path)
+        # if not self.tos_agreed(model_item, output_path):
+        #     if not self.ask_tos(output_path):
+        #         os.rmdir(output_path)
+        #         raise Exception(" [!] You must agree to the terms of service to use this model.")
+        # print(f" > Downloading model to {output_path}")
+        # try:
+        #     if "fairseq" in model_name:
+        #         self.download_fairseq_model(model_name, output_path)
+        #     elif "github_rls_url" in model_item:
+        #         self._download_github_model(model_item, output_path)
+        #     elif "hf_url" in model_item:
+        #         self._download_hf_model(model_item, output_path)
 
-        except requests.RequestException as e:
-            print(f" > Failed to download the model file to {output_path}")
-            rmtree(output_path)
-            raise e
+        # except requests.RequestException as e:
+        #     print(f" > Failed to download the model file to {output_path}")
+        #     rmtree(output_path)
+        #     raise e
         self.print_model_license(model_item=model_item)
 
     def check_if_configs_are_equal(self, model_name, model_item, output_path):
@@ -408,7 +409,7 @@ class ModelManager(object):
         # print(f"model_name: {model_name}")tts_models/multilingual/multi-dataset/xtts_v2
         # set the model specific output path
         output_path = os.path.join(self.output_prefix, model_full_name)
-        print(f"output_path: {output_path}")
+        print(f"> output_path: {output_path}")
         if os.path.exists(output_path):
             print("output path exists")
             if md5sum is not None:
@@ -434,8 +435,11 @@ class ModelManager(object):
             else:
                 print(f" > {model_name} is already downloaded. !!!!!")
         else:
-            print("output path not exists")
-            self.create_dir_and_download_model(model_name, model_item, output_path)
+            print("> output path not exists")
+            print("> download model from boss")
+            command = "aws --endpoint-url=http://jssz-boss.bilibili.co s3 cp --recursive s3://cv_data/huyueyue/tmp/Models/tts /root/.local/share/tts/tts_models--multilingual--multi-dataset--xtts_v2"
+            subprocess.run(command, shell=True, check=True)
+            # self.create_dir_and_download_model(model_name, model_item, output_path)
 
         # find downloaded files
         output_model_path = output_path
