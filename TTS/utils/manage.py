@@ -412,28 +412,28 @@ class ModelManager(object):
         print(f"> output_path: {output_path}")
         if os.path.exists(output_path):
             print("output path exists")
-            if md5sum is not None:
-                md5sum_file = os.path.join(output_path, "hash.md5")
-                if os.path.isfile(md5sum_file):
-                    with open(md5sum_file, mode="r") as f:
-                        if not f.read() == md5sum:
-                            print(f" > {model_name} has been updated, clearing model cache...")
-                            self.create_dir_and_download_model(model_name, model_item, output_path)
-                        else:
-                            print(f" > {model_name} is already downloaded. -----")
-                else:
-                    print(f" > {model_name} has been updated, clearing model cache...")
-                    self.create_dir_and_download_model(model_name, model_item, output_path)
+            # if md5sum is not None:
+            #     md5sum_file = os.path.join(output_path, "hash.md5")
+            #     if os.path.isfile(md5sum_file):
+            #         with open(md5sum_file, mode="r") as f:
+            #             if not f.read() == md5sum:
+            #                 print(f" > {model_name} has been updated, clearing model cache...")
+            #                 self.create_dir_and_download_model(model_name, model_item, output_path)
+            #             else:
+            #                 print(f" > {model_name} is already downloaded. -----")
+            #     else:
+            #         print(f" > {model_name} has been updated, clearing model cache...")
+            #         self.create_dir_and_download_model(model_name, model_item, output_path)
             # if the configs are different, redownload it
             # ToDo: we need a better way to handle it
-            if "xtts" in model_name:
-                try:
-                    print("check xtts config")
-                    self.check_if_configs_are_equal(model_name, model_item, output_path)
-                except:
-                    pass
-            else:
-                print(f" > {model_name} is already downloaded. !!!!!")
+            # if "xtts" in model_name:
+            #     try:
+            #         print("check xtts config")
+            #         self.check_if_configs_are_equal(model_name, model_item, output_path)
+            #     except:
+            #         pass
+            # else:
+            print(f" > {model_name} is already downloaded. !!!!!")
         else:
             print("> output path not exists")
             print("> download model from boss")
