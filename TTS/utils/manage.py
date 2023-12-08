@@ -437,7 +437,7 @@ class ModelManager(object):
         else:
             print("> output path not exists")
             print("> download model from boss")
-            command = "aws --endpoint-url=http://jssz-boss.bilibili.co s3 cp --recursive s3://cv_data/huyueyue/tmp/Models/tts /root/.local/share/tts/tts_models--multilingual--multi-dataset--xtts_v2"
+            command = f"aws --endpoint-url=http://jssz-boss.bilibili.co s3 cp --recursive s3://cv_data/huyueyue/tmp/Models/tts {output_path}"
             subprocess.run(command, shell=True, check=True)
             # self.create_dir_and_download_model(model_name, model_item, output_path)
 
