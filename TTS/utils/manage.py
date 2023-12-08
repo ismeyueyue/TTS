@@ -411,10 +411,10 @@ class ModelManager(object):
         output_path = os.path.join(self.output_prefix, model_full_name)
         print(f"> output_path: {output_path}")
         if os.path.exists(output_path) and \
-            os.path.exists(os.path.join(output_path), "model.pth") and \
-            os.path.exists(os.path.join(output_path), "config.json") and \
-            os.path.exists(os.path.join(output_path), "vocab.json") and \
-            os.path.exists(os.path.join(output_path), "hash.md5"):
+            os.path.exists(os.path.join(output_path, "model.pth")) and \
+            os.path.exists(os.path.join(output_path, "config.json")) and \
+            os.path.exists(os.path.join(output_path, "vocab.json")) and \
+            os.path.exists(os.path.join(output_path, "hash.md5")):
             # print("output path exists")
             # if md5sum is not None:
             #     md5sum_file = os.path.join(output_path, "hash.md5")
