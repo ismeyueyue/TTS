@@ -410,8 +410,12 @@ class ModelManager(object):
         # set the model specific output path
         output_path = os.path.join(self.output_prefix, model_full_name)
         print(f"> output_path: {output_path}")
-        if os.path.exists(output_path):
-            print("output path exists")
+        if os.path.exists(output_path) and \
+            os.path.exists(os.path.join(output_path), "model.pth") and \
+            os.path.exists(os.path.join(output_path), "config.json") and \
+            os.path.exists(os.path.join(output_path), "vocab.json") and \
+            os.path.exists(os.path.join(output_path), "hash.md5"):
+            # print("output path exists")
             # if md5sum is not None:
             #     md5sum_file = os.path.join(output_path, "hash.md5")
             #     if os.path.isfile(md5sum_file):
@@ -435,10 +439,13 @@ class ModelManager(object):
             # else:
             print(f" > {model_name} is already downloaded. !!!!!")
         else:
-            print("> output path not exists")
+            # print("> output path not exists")
             print("> download model from boss")
             command = f"aws --endpoint-url=http://jssz-boss.bilibili.co s3 cp --recursive s3://cv_data/huyueyue/tmp/Models/tts {output_path}"
-            subprocess.run(command, shell=True, check=True)
+            try:
+                subprocess.run(command, shell=True, check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"> download model error: {e}")
             # self.create_dir_and_download_model(model_name, model_item, output_path)
 
         # find downloaded files
