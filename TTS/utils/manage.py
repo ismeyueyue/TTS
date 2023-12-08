@@ -405,9 +405,12 @@ class ModelManager(object):
             model_name (str): model name as explained above.
         """
         model_item, model_full_name, model, md5sum = self._set_model_item(model_name)
+        # print(f"model_name: {model_name}")tts_models/multilingual/multi-dataset/xtts_v2
         # set the model specific output path
         output_path = os.path.join(self.output_prefix, model_full_name)
+        print(f"output_path: {output_path}")
         if os.path.exists(output_path):
+            print("output path exists")
             if md5sum is not None:
                 md5sum_file = os.path.join(output_path, "hash.md5")
                 if os.path.isfile(md5sum_file):
@@ -416,7 +419,7 @@ class ModelManager(object):
                             print(f" > {model_name} has been updated, clearing model cache...")
                             self.create_dir_and_download_model(model_name, model_item, output_path)
                         else:
-                            print(f" > {model_name} is already downloaded.")
+                            print(f" > {model_name} is already downloaded. -----")
                 else:
                     print(f" > {model_name} has been updated, clearing model cache...")
                     self.create_dir_and_download_model(model_name, model_item, output_path)
@@ -424,12 +427,14 @@ class ModelManager(object):
             # ToDo: we need a better way to handle it
             if "xtts" in model_name:
                 try:
+                    print("check xtts config")
                     self.check_if_configs_are_equal(model_name, model_item, output_path)
                 except:
                     pass
             else:
-                print(f" > {model_name} is already downloaded.")
+                print(f" > {model_name} is already downloaded. !!!!!")
         else:
+            print("output path not exists")
             self.create_dir_and_download_model(model_name, model_item, output_path)
 
         # find downloaded files
